@@ -1,16 +1,16 @@
-from sqlalchemy import create_engine, Column, Integer, Float, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, Float, String, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker
+from datetime import datetime
 
 Base = declarative_base()
+DATABASE_URL = "sqlite:///landmarks.db"
+engine = create_engine(DATABASE_URL)
+Session = sessionmaker(bind=engine)
 
 class Landmark(Base):
     __tablename__ = 'landmarks'
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     face_id = Column(String)
     x = Column(Float)
     y = Column(Float)
-
-engine = create_engine('sqlite:///landmarks.db')
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
+    timestamp = Column(DateTime, default=datetime.utcnow)
